@@ -1,0 +1,17 @@
+What is logical 'OR'?:
+
+1) a > b;		2)a == b;
+3) a || b;		3)a && b. #32
+What equal is true for a = 1, b = 3?:
+
+1)a > b;		2)b == a;
+3)a > 0 < b;		4)a < b < 0. #32
+Solve the disjunction 1010 V 1110 (1 - true, 0 - false):
+
+1) 1110;		2) 0100;
+3) 1010;		4) 0101. #14
+What the conjunction 1010 && 1110 is?
+(1 - true, 0 - false):
+
+1) 1011;		2) 1010;
+3) 0101;		4) 1111. #24

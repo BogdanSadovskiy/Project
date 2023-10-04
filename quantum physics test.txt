@@ -1,0 +1,24 @@
+What is the name of the minimum amount of energy that can be emitted by a system?
+1)Quantum;		2)Joule;
+3)Electron Volt;	4)Atom. #12
+Choose the true:
+1)light is emitted and absorbed continuously;
+2)light is emitted in separate portions, it cannot be absorbed;
+3)light is emitted and absorbed in separate portions, called quantum;
+4)light is a certain absolute. #32
+What formula is used to calculate the momentum of a photon?
+1)mc;		2)mc^2;
+3)(mv^2)/2;	4)hu. #12
+Which of the listed scientists wrote down the equation of the photoeffect?:
+1)Plank;		2)Maxwell;
+3)Einstein;		4)Remer. #32
+What is a photon?
+1) A particle that has a charge;
+2) A particle of light;
+3) A photon is an electron;
+4) A particle of light which has mass. #22
+The photoeffect is:
+1) Loss of electrons when a metal plate in heating;
+2) Photon and electron interaction;
+3) Extraction of electrons from the metal surface under the influence of light;
+4) All answers are correct. #32
