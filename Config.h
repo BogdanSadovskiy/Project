@@ -21,6 +21,7 @@ public:
 	char* hashing(char* password);
 	void exit();
 	void enterMenu();
+	bool isLogExist(char* login);
 	bool isPassSave(char* pass);
 	void logIn(bool& escape);
 	void sighUp(bool& escape);

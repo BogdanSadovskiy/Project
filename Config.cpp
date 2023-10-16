@@ -111,6 +111,33 @@ bool Config::isLogAndPassTrue(bool& access, char* login, char* password) {
 	return false;
 }
 
+bool Config:: isLogExist(char* login) {
+	ifstream tmp;
+	char* readedLog = new char[30];
+	tmp.open("Logs", ios::binary);
+	if (!tmp.is_open()) {
+		cout << Errors().getTheError(3);
+	}
+	for (int i = 0; i < numberOfAcc; i++) {
+		tmp.read(readedLog, 30);
+		if (Setup().isSameChars(readedLog, login)) {
+			tmp.close();
+			return true;
+		}
+	}
+	tmp.close();
+	tmp.open("Admin", ios::binary);
+	if (!tmp.is_open()) {
+		cout << Errors().getTheError(3);
+	}
+	tmp.read(readedLog, 30);
+	tmp.close();
+	if (Setup().isSameChars(readedLog, login)) {
+		return true;
+	}
+	return false;
+}
+
 char* Config:: hashing(char* password) {
 	char* hash = new char[30];
 	int i = 0;

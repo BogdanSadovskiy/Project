@@ -119,7 +119,33 @@ startUserMenu:
 		Questionary(escape);
 		goto startUserMenu;
 	}
+	cout << "\n\n\t\t\t\tWelcome " << this->thisAccount.Name << endl;
+	cout << "\t\tTest ------- 1\n";
+	cout << "\t\tYour marks - 2\n";
+	cout << "\t\tYour date -- 3\n";
+	cout << "\t\te ------- exit\n";
+	cout << "\t\tl ----- logOut\n";
+	string tmp; cin >> tmp;
+	if (tmp == "1") {
 
+	}
+	else if (tmp == "2") {
+
+	}
+	else if (tmp == "3") {
+
+	}
+	else if (tmp == "e" || tmp == "E") {
+		escape = true;
+		Config().exit();
+	}
+	else if (tmp == "l" || tmp == "L") {
+		logOut = true;
+	}
+	else {
+		Errors().getTheError(1);
+	}
+	goto startUserMenu;
 }
 
 void  Account:: AdminMenu(bool& escape, bool& logOut) {
