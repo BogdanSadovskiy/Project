@@ -6,7 +6,6 @@
 
 int main()
 {
-	Config startTest;
-	startTest.enterMenu();
+	Config().enterMenu();
 }
 

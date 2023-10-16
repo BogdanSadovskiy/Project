@@ -1,0 +1,23 @@
+Can displacement be zero?
+
+1)No;		2)Never;
+3)Sometimes;	4)Yes. #41
+Vertical movement:
+
+1) airplane flight;		2) car movement;
+3) elevator movement;		4) rotation of the earth around the sun.
+The swimmer swam the 50 m long swimming pool twice - there and back. #31
+What path and displacement did the swimmer make?
+
+1) L = 100m; s = 0m.		2) L = 50m; s = 50m.
+3) L = 100m; s = 100m.		4) L = 0m; s = 100m. #12 
+The plane increased its speed from 108 km/h to 360 km/h in 14 seconds.
+What was the acceleration of the plane?
+
+1) 18 m/s2;		2) 25 m/s2;
+3) 10 m/s2;		4) 5 m/s2. #44
+Еhe car was moving at a speed of 18 km/h and stopped in 4 s.
+Determine the acceleration of its movement and the braking distance of the car.
+
+1) 1,25 m/s2; 40m.		2) -1,25 m/s2; 10m.
+3) -4,5 m/s2; 10m.		4) 4,5 m/s2; 40m. #24

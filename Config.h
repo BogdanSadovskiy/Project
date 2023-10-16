@@ -1,29 +1,31 @@
 #pragma once
 #include <iostream>
+#include <string>
 #include <stdlib.h>
 #include <windows.h>
 #include <fstream>
 #include "Errors.h"
+#include "Setup.h"
+#include "Account.h"
+
 using namespace std;
 class Config
 {
 private:
-	struct Access {
-		bool log;
-		bool password;
-		bool permission;
-	};
-	Access access;
+	int numberOfAcc;
 	
 public:
 	Config();
+	int getNumberOfAcc();
+	void pushNumberOfAcc();
+	char* hashing(char* password);
 	void exit();
 	void enterMenu();
-	bool isPassSave(string pass);
-	bool isEnteringCorrect(string log, string password);
+	bool isPassSave(char* pass);
 	void logIn(bool& escape);
 	void sighUp(bool& escape);
-	bool isEmailTrue(string Email);
-	void createAccount(string login, string password);
+	bool isEmailTrue(char* Email);
+	bool isLogAndPassTrue(bool& access, char* login, char* password);
+	void createAccount(char* login, char* password);
 };
 
