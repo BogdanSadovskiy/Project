@@ -12,6 +12,8 @@ int Config::getNumberOfAcc() {				//reading how many accounts we have
 	}
 	num.read((char*)&this->numberOfAcc, 10);
 	num.close();
+	cout << numberOfAcc;
+	Sleep(1000);
 	return numberOfAcc;
 }
 
@@ -49,7 +51,7 @@ bool Config::isPassSave(char* pass) {
 	bool Uppercase = false;
 	bool lowercase = false;
 	bool otherSymbol = false;
-	for (int i = 0; pass[i] != '\n'; i++) {
+	for (int i = 0; pass[i] != '\0'; i++) {
 		if ((int)pass[i] > 64 && (int)pass[i] < 91) {
 			Uppercase = true;
 		}
@@ -60,6 +62,7 @@ bool Config::isPassSave(char* pass) {
 			otherSymbol = true;
 		}
 	}
+	cout << Uppercase << " " << lowercase << " " << otherSymbol << endl;
 	if (!Uppercase || !lowercase || !otherSymbol) {
 		cout << Errors().getTheError(10);
 		Errors().~Errors();
@@ -77,7 +80,6 @@ bool isAdmin(bool& access, char* login, char* password, char* readedLog, char* r
 	tmp.read(readedPass, 30);
 	tmp.close();
 	if (Setup().isSameChars(readedLog, login) && Setup().isSameChars(readedPass, password)) {	
-		cout << "Im here\n";
 		access = true;
 		return true;
 	}
@@ -119,9 +121,14 @@ bool Config:: isLogExist(char* login) {
 		cout << Errors().getTheError(3);
 	}
 	for (int i = 0; i < numberOfAcc; i++) {
+		char* c = new char [30];
 		tmp.read(readedLog, 30);
+		Sleep(500);
+		tmp.read(c, 30);
 		if (Setup().isSameChars(readedLog, login)) {
 			tmp.close();
+			cout << Errors().getTheError(5);
+			Sleep(1000);
 			return true;
 		}
 	}
@@ -130,9 +137,12 @@ bool Config:: isLogExist(char* login) {
 	if (!tmp.is_open()) {
 		cout << Errors().getTheError(3);
 	}
+
 	tmp.read(readedLog, 30);
 	tmp.close();
 	if (Setup().isSameChars(readedLog, login)) {
+		cout << Errors().getTheError(5);
+		Sleep(1000);
 		return true;
 	}
 	return false;
@@ -159,7 +169,7 @@ char* Config:: hashing(char* password) {
 	return hash;
 }
 
-void Config::createAccount(char* login, char* password) {			// creatin new account
+void Config::createAccount(char* login,  char* password) {			// creatin new account
 	ofstream newAcc;
 	newAcc.open("Logs", ios::app | ios::binary);
 	if (!newAcc.is_open()) {
@@ -176,21 +186,16 @@ void Config::createAccount(char* login, char* password) {			// creatin new accou
 void Config::exit() {
 	system("cls");
 	cout << "\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tBye\n\n\n\n\n\n\n\n\n";
+	Sleep(800);
 }
 
 void Config::enterMenu() {			// main menu/first page
-	bool escape = false;
+	bool escape = false; string input;
 entermenu:
 	if (escape) {			// checking for exit
-		return;
+		return ;
 	}
-	system("cls");
-	cout << "\n\n\n\n\n\n\n";
-	cout << "\t\t\t\t\t\t1) Sigh in\n";
-	cout << "\t\t\t\t\t\t2) Sigh up\n";
-	cout << "\t\t\t\t\t\te) - exit\n\n\t\t\t\t\t\t";
-	string input;
-	cin >> input;
+	Menu().mainMenu(input);
 	if (input == "1") {
 		logIn(escape);
 	}
@@ -203,7 +208,6 @@ entermenu:
 	else {
 		;
 		cout << "\t\t\t\t\t\t" << Errors().getTheError(1);  //gets the error from config class
-		Errors().~Errors();
 		Sleep(500);
 	}
 	goto entermenu;
@@ -214,13 +218,9 @@ void Config::logIn(bool& escape) {
 		return;
 	}
 startLoging:
-	system("cls");
-	cout << "\n\n\n\n\n\n\n";
-	cout << "\t\t\t\t\t\tInput login (Email)\n";
-	cout << "\t\t\t\t\t\tb) - back / e - exit\n";
-	cout << "\t\t\t\t\t\t";
 	string tmp;
-	char* login = new char[30]; cin >> tmp;
+	Menu().LoginingLog(tmp);
+	char* login = new char[30]; 
 	if (tmp == "b" || tmp == "B") {
 		return;
 	}
@@ -229,13 +229,9 @@ startLoging:
 		escape = true; return;
 	}
 	Setup().stringToChar(tmp, login);
-	system("cls");
-	cout << "\n\n\n\n\n\n\n";
-	cout << "\t\t\t\t\t\tLogin: " << login << endl;
-	cout << "\t\t\t\t\t\tInput password\n";
-	cout << "\t\t\t\t\t\tb) - back / e - exit\n";
-	cout << "\t\t\t\t\t\t";
-	char* pass = new char[30]; cin >> tmp;
+
+	Menu().LoginingPass(tmp, login);
+	char* pass = new char[30]; 
 	if (tmp == "b" || tmp == "B") {
 		goto startLoging;
 	}
@@ -247,46 +243,39 @@ startLoging:
 	pass = hashing(pass);
 	bool access = false;
 	if (isLogAndPassTrue(access, login, pass)) {
-		cout << access;
-		Account acc(access, numberOfAcc, login, pass);
-		acc.Menu(escape);
-		
+		Account (access, this->numberOfAcc, login, pass).accMenu(escape);
 	}
 	else {
-		Errors().getTheError(4);
+		cout << Errors().getTheError(4);
 		goto startLoging;
 		Sleep(500);
 	}
 }
 void Config::sighUp(bool& escape) {
 startSighUp:
-	system("cls");
-	cout << "\n\n\n\n\n\n\n";
-	cout << "\t\t\t\t\t\tInput Email (it will be your login)\n";
-	cout << "\t\t\t\t\t\tb) - back / e - exit\n";
-	cout << "\t\t\t\t\t\t";
 	char* login = new char[30];
-	string tmp;  cin >> tmp;
+	string tmp;  
+	Menu().SighUpLog(tmp);
 	if (tmp == "b" || tmp == "B") {
 		return;
 	}
 	else if (tmp == "e" || tmp == "E") {
 		exit();
+		escape = true;  return;
 	}
 	Setup().stringToChar(tmp, login);
 	if (!isEmailTrue(login)) {
 		cout << "\t\t\t\t\t\t" << Errors().getTheError(2);
-		Errors().~Errors();
 		Sleep(500);
+		goto startSighUp;
 	}
-	system("cls");
+	if (isLogExist(login)) {
+		goto startSighUp;
+	}
+
 startSighPass:
-	cout << "\n\n\n\n\n\n\n";
-	cout << "\t\t\t\t\t\tLogin: " << login << endl;
-	cout << "\t\t\t\t\t\tCreate password\n";
-	cout << "\t\t\t\t\t\tb) - back / e - exit\n";
-	cout << "\t\t\t\t\t\t";
-	char* pass = new char[30]; cin >> tmp;
+	Menu().SighUpPass(tmp, login);
+	char* pass = new char[30]; 
 	if (tmp == "b" || tmp == "B") {
 		goto startSighUp;
 	}
@@ -303,8 +292,7 @@ startSighPass:
 	pass = hashing(pass); //hashing of pass
 	createAccount(login, pass);
 	Account newAcc(login);
-	newAcc.~Account();
-	Sleep(500);
 	cout <<"\n\n\n\n\n\n\n\t\t\t\t\t\tGREAT\n";
+	Sleep(1000);
 	logIn(escape);
 }

@@ -2,7 +2,7 @@
 using namespace std;
 #include<iostream>
 
-
+#include "TestForStudent.h"
 #include "Config.h"
 class Account
 {
@@ -28,28 +28,29 @@ private:
 		int numOfQuantumPhysicsDone;
 		int numOfMechanicPhysicsDone;
 
-		char* AnalisisMarks = new char[1000];
-		char* DescretMarks = new char[1000];
-		char* QuantumMarks = new char[1000];
-		char* MechanicMarks = new char[1000];
+		int* AnalisisMarks = new int[20];
+		int* DescretMarks = new int[20];
+		int* QuantumMarks = new int[20];
+		int* MechanicMarks = new int[20];
 
 	};
 	int numberOfAcc;
-	AccountDate* accountDate = new AccountDate[numberOfAcc];
 	Accounts* accounts = new Accounts[numberOfAcc];
 
 	Accounts attributes;
 	AccountDate thisAccount;
 public:
-	Account(char* login);
+	Account( char* login);
 	Account( bool access, int& numberOfAcc, char* login, char* password);
-	~Account();
-	void saveAccountsDate(char* login);
+	void getEveryLogDate();
+	void writeEveryLogDate();
+	void accTest(bool& escape, bool& logOut);
+	void saveAccountLog( char* login);
 	void readDate(char* login);
 	void userMenu(bool& escape, bool& logOut);
-	void Questionary(bool& escape);
+	void Questionary(bool& escape, bool& logOut);
 	void AdminMenu(bool& escape, bool& logOut);
-	void Menu(bool& escape);
+	void accMenu(bool& escape);
 
 	
 };

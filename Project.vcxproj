@@ -130,14 +130,18 @@
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Errors.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Project.cpp" />
     <ClCompile Include="Setup.cpp" />
+    <ClCompile Include="TestForStudent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Account.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Errors.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Setup.h" />
+    <ClInclude Include="TestForStudent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

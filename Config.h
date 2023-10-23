@@ -7,6 +7,7 @@
 #include "Errors.h"
 #include "Setup.h"
 #include "Account.h"
+#include "Menu.h"
 
 using namespace std;
 class Config
@@ -25,8 +26,8 @@ public:
 	bool isPassSave(char* pass);
 	void logIn(bool& escape);
 	void sighUp(bool& escape);
-	bool isEmailTrue(char* Email);
+	bool isEmailTrue( char* Email);
 	bool isLogAndPassTrue(bool& access, char* login, char* password);
-	void createAccount(char* login, char* password);
+	void createAccount( char* login,  char* password);
 };
 

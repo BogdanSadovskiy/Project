@@ -1,6 +1,6 @@
 #include "Account.h"
 
-void Account:: saveAccountsDate(char * login) {				//saving date of account
+void Account:: saveAccountLog( char * login) {				//saving date of account
 	ofstream date;
 	date.open(login, ios::binary);
 	if (!date.is_open()) {
@@ -11,7 +11,7 @@ void Account:: saveAccountsDate(char * login) {				//saving date of account
 	date.close();
 }
 
-Account::Account(char* login) {
+Account::Account( char* login) {					//constructor for sighUping
 	this->thisAccount.questionary = false;
 
 	this->thisAccount.numOfMathAnalisis = 0;
@@ -23,22 +23,23 @@ Account::Account(char* login) {
 	this->thisAccount.numOfMathDescretDone = 0;
 	this->thisAccount.numOfMechanicPhysicsDone = 0;
 	this->thisAccount.numOfQuantumPhysicsDone = 0;
+	
 
-	this->thisAccount.Name[0] = '\0';
-	this->thisAccount.Surname[0] = '\0';
+	Setup().stringToChar("Non", this->thisAccount.Name);
+	Setup().stringToChar("registrated", this->thisAccount.Surname);
 	this->thisAccount.fullAdress[0] = '\0';
-
-	this->thisAccount.AnalisisMarks[0] = '\0';
-	this->thisAccount.DescretMarks[0] = '\0';
-	this->thisAccount.MechanicMarks[0] = '\0';
-	this->thisAccount.QuantumMarks[0] = '\0';
-
-	saveAccountsDate(login);
+	int none = 69;
+	this->thisAccount.AnalisisMarks[0] = none;
+	this->thisAccount.DescretMarks[0] = none;
+	this->thisAccount.MechanicMarks[0] = none;
+	this->thisAccount.QuantumMarks[0] = none;
+	
+	saveAccountLog(login);
 }
 
 Account::Account( bool access, int& numberOfAcc, char* login, char* password) {
 	if (access) {
-		this->admin = true;
+		this->admin = true;		//constructor for logIning
 	}
 	else {
 		this->admin = false;
@@ -48,46 +49,56 @@ Account::Account( bool access, int& numberOfAcc, char* login, char* password) {
 	this->attributes.password = password;
 	this->numberOfAcc = numberOfAcc;
 	
+	getEveryLogDate();
 }
 
-Account::~Account() {
-	delete[] this->accountDate;
-	delete[] this->accounts;
+
+
+void Account::getEveryLogDate() {			//reading all acc log date
+	ifstream tmp; tmp.open("Logs", ios::binary);
+	if (!tmp.is_open()) {
+		cout << Errors().getTheError(3);
+	}
+	for (int i = 0; i < this->numberOfAcc; i++) {
+		tmp.read(this->accounts[i].login, 30);
+		tmp.read(this->accounts[i].password, 30);
+		cout << this->accounts[i].login << endl;
+	}
+	Sleep(1000);
+	tmp.close();
 }
+
+void Account::writeEveryLogDate() {				//writing all acc logs date
+	ofstream tmp; tmp.open("Logs", ios::binary);
+	if (!tmp.is_open()) {
+		cout << Errors().getTheError(3);
+	}
+	for (int i = 0; i < this->numberOfAcc; i++) {
+		tmp.write(this->accounts[i].login, 30);
+		tmp.write(this->accounts[i].password, 30);
+	}
+	tmp.close();
+}
+
 void Account::readDate(char* login) {		//reading for cuurrent date of account
 	ifstream date;
 	date.open(login, ios::binary);
 	if (!date.is_open()) {
 		cout << Errors().getTheError(3);
-		Errors().~Errors();
 	}
 	date.read((char*)&this->thisAccount, sizeof(AccountDate));
 	date.close();
 }
 
-void Account :: Questionary(bool& logOut) {					//anketa
+void Account :: Questionary(bool& escape, bool& logOut) {					//anketa
 startQuestionary:
+	string tmp;
 	char* _name = new char[30];
 	char* _surname = new char[30];
 	char* _address = new char[100];
-	cout << "\n\n\t\tYour Name: ";
-	cin >> _name;
-	cout << "\t\tYour Surname: ";
-	cin >> _surname;
-	cout << "\t\tYour home address:\n\t\t";
-	string tmp;
-	getline(cin, tmp);
-	Setup().stringToChar(tmp, _address);
-	isCorrectQuestionary:
-	system("cls");
-	cout << "\n\n\t\tName: ";
-	cout << _name << endl;
-	cout << "\t\tSurname: ";
-	cout << _surname <<endl;
-	cout << "\t\tHome address: ";
-	cout << _address << endl <<  endl;
-	cout << "\t\tIs everything correct?\n\t\t1 - yes , 0 - correct date, l - log out\n\t\t";
-	cin >> tmp;
+	Menu().QuestionaryAccount(_name, _surname, _address);
+isCorrectQuestionary:
+	Menu().QuestionaryAccountSecond(_name, _surname, _address, tmp);
 	if (tmp == "1") {
 		this->thisAccount.questionary = true;
 		this->thisAccount.Name = _name;
@@ -100,34 +111,33 @@ startQuestionary:
 	else if (tmp == "l" || tmp == "L") {
 		logOut = true;
 	}
+	else if (tmp == "e" || tmp == "E") {
+		escape = true;
+		Config().exit();
+	}
 	else {
 		Errors().getTheError(1);
 		Sleep(500);
 		goto isCorrectQuestionary;
 	}
-
-
 }
  
 void Account::userMenu(bool& escape, bool& logOut) {
 startUserMenu:
-	system("cls");
+	
 	if (escape || logOut) {
 		return;
 	}
 	if (!this->thisAccount.questionary) {
-		Questionary(escape);
+		Questionary(escape, logOut);
 		goto startUserMenu;
 	}
-	cout << "\n\n\t\t\t\tWelcome " << this->thisAccount.Name << endl;
-	cout << "\t\tTest ------- 1\n";
-	cout << "\t\tYour marks - 2\n";
-	cout << "\t\tYour date -- 3\n";
-	cout << "\t\te ------- exit\n";
-	cout << "\t\tl ----- logOut\n";
-	string tmp; cin >> tmp;
-	if (tmp == "1") {
+	
+	string tmp; 
+	Menu().accMenustart(tmp, this->thisAccount.Name);
 
+	if (tmp == "1") {
+		accTest(escape, logOut);
 	}
 	else if (tmp == "2") {
 
@@ -143,17 +153,17 @@ startUserMenu:
 		logOut = true;
 	}
 	else {
-		Errors().getTheError(1);
+		cout << Errors().getTheError(1);
+		Sleep(600);
 	}
 	goto startUserMenu;
 }
 
 void  Account:: AdminMenu(bool& escape, bool& logOut) {
-	cout << "ok lets go";
-	Sleep(1000);
+
 }
 
-void Account:: Menu(bool& escape) {
+void Account:: accMenu(bool& escape) {
 	bool logOut = false;
 	if (this->admin) {
 		AdminMenu(escape, logOut);
@@ -161,4 +171,45 @@ void Account:: Menu(bool& escape) {
 	else {
 		userMenu(escape, logOut);
 	}
+}
+
+void Account::accTest(bool& escape, bool& logOut) {
+startAccTest:
+	if (escape || logOut) {
+		return;
+	}
+	string tmp;
+	Menu().TestAccountMenu(tmp);
+	string nameTest;
+
+	if (tmp == "1") {
+		nameTest = "Descret math test";
+	}
+	else if (tmp == "2") {
+		nameTest = "Math analysis";
+	}
+	else if (tmp == "3") {
+		nameTest = "mechanic";
+	}
+	else if (tmp == "4") {
+		nameTest = "quantum physics test";
+	}
+	else if (tmp == "b" || tmp == "B") {
+		return;
+	}
+	else if (tmp == "e" || tmp == "E") {
+		escape = true;
+		Config().exit();
+	}
+	else if (tmp == "l" || tmp == "L") {
+		logOut = true;
+	}
+	else {
+		Errors().getTheError(1);
+		Sleep(600);
+	}
+	TestForStudent(nameTest).MainMenuTask(this->thisAccount.numOfMathAnalisisDone, this->thisAccount.AnalisisMarks);
+	goto startAccTest;
+
+
 }
